@@ -29,14 +29,25 @@ public class Client {
     private int port = 443;
     private boolean scheme = true;
     private String authorization = null;
+    private int cidl = 20;
+    private int cidn = 13;
 
     public Client() {
         host = burp.gui.Config.getHost();
         scheme = burp.gui.Config.getScheme();
         authorization = burp.gui.Config.getAuth();
         try {
+            cidl = Integer.parseInt(burp.gui.Config.getCidl());
+        } catch(NumberFormatException ne) {
+            cidl = 20;
+        } 
+        try {
+            cidn = Integer.parseInt(burp.gui.Config.getCidn());
+        } catch(NumberFormatException ne) {
+            cidn = 13;
+        }
+        try {
             port = Integer.parseInt(burp.gui.Config.getPort());
-
         } catch (NumberFormatException ne) {
             port = 443;
         }
@@ -46,7 +57,7 @@ public class Client {
         String pubKey = Base64.getEncoder().encodeToString(getPublicKey().getBytes(StandardCharsets.UTF_8));
         secretKey = UUID.randomUUID().toString();
         xid = Xid.get();
-        correlationId = xid.toString();
+        correlationId = xid.toString().substring(0, cidl);
 
         try {
             JSONObject registerData = new JSONObject();
@@ -150,7 +161,7 @@ public class Client {
 
             // Fix the string up to 33 characters
             Random random = new Random();
-            while (fullDomain.length() < 33) {
+            while (fullDomain.length() < cidl + cidn) {
                 fullDomain += (char) (random.nextInt(26) + 'a');
             }
             fullDomain += "." + host;

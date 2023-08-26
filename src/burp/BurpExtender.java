@@ -116,6 +116,8 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
         private static JTextField serverText;
         private static JTextField portText;
         private static JTextField authText;
+        private static JTextField cidlText;
+        private static JTextField cidnText;
         private static JCheckBox tlsBox;
         private List<InteractEntry> log = new ArrayList<InteractEntry>();
         private InteractshListener listener;
@@ -159,12 +161,14 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
             mainPane.addTab("Configuration", configPanel);
             configPanel.add(subConfigPanel);
             JPanel innerConfig = new JPanel();
-            subConfigPanel.setMaximumSize(new Dimension(configPanel.getMaximumSize().width, 150));
+            subConfigPanel.setMaximumSize(new Dimension(configPanel.getMaximumSize().width, 260));
             innerConfig.setLayout(new SpringLayout());
             subConfigPanel.add(innerConfig);
 
             serverText = new JTextField("oast.pro", 20);
             portText = new JTextField("443", 20);
+            cidlText = new JTextField("20", 20);
+            cidnText = new JTextField("13", 20);
             authText = new JTextField("", 20);
             tlsBox = new JCheckBox("", true);
 
@@ -177,6 +181,16 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
             innerConfig.add(port);
             port.setLabelFor(portText);
             innerConfig.add(portText);
+
+            JLabel cidl = new JLabel("Cidl: ");
+            innerConfig.add(cidl);
+            cidl.setLabelFor(cidlText);
+            innerConfig.add(cidlText);
+
+            JLabel cidn = new JLabel("Cidn: ");
+            innerConfig.add(cidn);
+            cidn.setLabelFor(cidnText);
+            innerConfig.add(cidnText);
 
             JLabel auth = new JLabel("Authorization: ");
             innerConfig.add(auth);
@@ -200,7 +214,7 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
             innerConfig.add(new JPanel());
 
             SpringUtilities.makeCompactGrid(innerConfig,
-                    5, 2, //rows, cols
+                    7, 2, //rows, cols
                     6, 6,        //initX, initY
                     6, 6);       //xPad, yPad
 
@@ -236,6 +250,24 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
         public static void setAuthText(String text) {
             authText.setText(text);
         }
+
+        public static String getCidlText() {
+            return cidlText.getText();
+        }
+
+        public static void setCidlText(String text) {
+            cidlText.setText(text);
+        }
+
+        public static String getCidnText() {
+            return cidnText.getText();
+        }
+
+        public static void setCidnText(String text) {
+            cidnText.setText(text);
+        }
+
+
 
         public static String getTlsBox() {
             return Boolean.toString(tlsBox.isSelected());
