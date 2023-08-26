@@ -228,4 +228,8 @@ public class Client {
 
         return result;
     }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
 }

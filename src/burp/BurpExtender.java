@@ -2,7 +2,9 @@ package burp;
 
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
+import burp.listeners.ClearTableListener;
 import burp.listeners.InteractshListener;
+import burp.listeners.PollNowListener;
 import burp.listeners.PollTimeListener;
 import interactsh.Client;
 import interactsh.InteractEntry;
@@ -67,7 +69,7 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
         api.logging().logToOutput("Thanks for collaborating!");
     }
 
-    public ArrayList<Client> getClients() {
+    public static ArrayList<Client> getClients() {
         return clients;
     }
 
@@ -89,6 +91,10 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
 
     public static void addToTable(InteractEntry i) {
         tab.addToTable(i);
+    }
+
+    public static void clearTable() {
+        tab.clearTable();
     }
 
     //
@@ -147,11 +153,18 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
             JLabel pollLabel = new JLabel("Poll Time: ");
             pollField = new JTextField("60", 4);
             pollField.getDocument().addDocumentListener(new PollTimeListener());
+            JButton PollButton = new JButton("Poll now");
+            JButton clearButton = new JButton("Clear");
 
             CollaboratorButton.addActionListener(listener);
+            PollButton.addActionListener(new PollNowListener());
+            clearButton.addActionListener(new ClearTableListener());
+
             panel.add(CollaboratorButton);
             panel.add(pollLabel);
             panel.add(pollField);
+            panel.add(PollButton);
+            panel.add(clearButton);
             splitPane.setTopComponent(panel);
 
             // Configuration pane
@@ -283,6 +296,11 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
 
         public void addToTable(InteractEntry i) {
             log.add(i);
+            logTable.revalidate();
+        }
+
+        public void clearTable() {
+            log.clear();
             logTable.revalidate();
         }
 

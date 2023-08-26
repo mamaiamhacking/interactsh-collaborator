@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import burp.BurpExtender;
 import interactsh.Client;
 
 public class InteractshListener implements ActionListener {
