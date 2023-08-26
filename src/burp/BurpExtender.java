@@ -13,6 +13,10 @@ import layout.SpringUtilities;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -338,6 +342,8 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
         //
 
         private class LogTable extends AbstractTableModel {
+            private static ZoneId localZone = ZoneId.systemDefault();
+            private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
             @Override
             public int getRowCount() {
@@ -382,7 +388,10 @@ public class BurpExtender implements BurpExtension, ContextMenuItemsProvider, Ex
                     case 2:
                         return ie.address;
                     case 3:
-                        return ie.timestamp;
+                        Instant instant = Instant.parse(ie.timestamp);                
+                        ZonedDateTime localTime = ZonedDateTime.ofInstant(instant, localZone);                
+                        String formattedLocalTime = localTime.format(formatter);                     
+                        return formattedLocalTime;
                     default:
                         return "";
                 }
