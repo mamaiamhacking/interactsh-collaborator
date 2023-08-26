@@ -27,7 +27,6 @@ public class PollNowListener implements ActionListener {
                 Client c = clients.get(i);
                 Thread poller = new Thread(new Runnable() {
                     public void run() {
-                        burp.BurpExtender.api.logging().logToOutput(c.getCorrelationId());
                         try {
                             c.poll();
                         } catch (InterruptedException ie) {
@@ -37,7 +36,6 @@ public class PollNowListener implements ActionListener {
                         count --;
                         if (count == 0) {
                             running = false;
-                            burp.BurpExtender.api.logging().logToOutput("Poll end");
                         }
                     }
                 });
